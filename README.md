@@ -147,7 +147,7 @@ GITHUB_TOKEN=ghp_your_token_here
 GEMINI_API_KEY=your_gemini_key_here
 
 # Database
-MONGO_URL=mongodb+srv://user:pass@cluster.mongodb.net/db
+MONGO_URL=your_mongodb_uri
 ```
 
 ### Review Criteria (src/config/config.js)
