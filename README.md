@@ -6,7 +6,7 @@ An AI-powered code review agent that automatically reviews GitHub pull requests 
 
 
 ### Step 1: AI Summary Comment
-![AI Summary](screenshots/pr-review.png)
+![AI Summary](screenshots/pr.png)
 
 **AI-generated summary showing**:
 - Total issues found
@@ -15,7 +15,7 @@ An AI-powered code review agent that automatically reviews GitHub pull requests 
 - File-by-file details with line numbers
 
 ### Step 2: Inline Comments
-![Inline Comments](screenshots/pr.png)
+![Inline Comments](screenshots/pr-review.png)
 
 **AI comments on code showing**:
 - Severity indicator (🔴/🟡/💡)
