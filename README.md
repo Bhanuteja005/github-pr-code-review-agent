@@ -1,263 +1,243 @@
-# 🤖 Code Review Agent - AI-Powered PR Reviewer
+# 🤖 GitHub PR Code Review Agent
 
-An intelligent **Code Review Agent** that automatically reviews GitHub pull requests using **Gemini 2.5 Pro**, checks for coding best practices, and posts detailed feedback directly on PRs.
+An AI-powered code review agent that automatically reviews GitHub pull requests using **Google Gemini 2.5 Pro** and posts intelligent feedback directly on GitHub.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)
-![MongoDB](https://img.shields.io/badge/database-MongoDB-green.svg)
+## 🤖 AI Review Results
 
-## 🚀 Features
 
-### 🧠 AI-Powered Analysis
-- **Gemini 2.5 Pro Integration**: Advanced semantic code understanding
-- **Multi-Language Support**: JavaScript, TypeScript, Python, Java, and more
-- **Context-Aware Reviews**: Understands code context and relationships
+### Step 1: AI Summary Comment
+![AI Summary](screenshots/pr-review.png)
 
-### 🔍 Comprehensive Review Criteria
-- **Security Vulnerabilities**: Detects potential security issues
-- **Performance Optimization**: Identifies performance bottlenecks
-- **Code Readability**: Suggests improvements for maintainability
-- **Best Practices**: Enforces language/framework conventions
-- **Test Coverage**: Reviews testing approaches
-- **Documentation**: Checks code documentation quality
+**AI-generated summary showing**:
+- Total issues found
+- Severity breakdown
+- Category analysis
+- File-by-file details with line numbers
 
-### 🔄 Automated Workflow
-- **GitHub Webhooks**: Automatic PR detection and processing
-- **Real-time Comments**: Posts inline feedback directly on GitHub
-- **State Management**: Tracks review progress and avoids duplicates
-- **Retry Mechanism**: Handles failures gracefully with retry logic
+### Step 2: Inline Comments
+![Inline Comments](screenshots/pr.png)
 
-### 🛡️ Enterprise-Ready
-- **Secure Webhook Validation**: Verifies GitHub webhook signatures
-- **Rate Limiting**: Protects against API abuse
-- **Comprehensive Logging**: Structured logging with Winston
-- **Error Handling**: Robust error management and recovery
+**AI comments on code showing**:
+- Severity indicator (🔴/🟡/💡)
+- Category (SECURITY/PERFORMANCE/etc.)
+- Detailed explanation
+- Code suggestions
 
-## 📋 Requirements
+---
 
-- **Node.js** >= 18.0.0
-- **MongoDB** >= 4.4
-- **GitHub Token** with repository permissions
-- **Gemini API Key** from Google AI Studio
+## ✨ Features
 
-## 🛠️ Installation
+- **🧠 AI-Powered Reviews**: Uses Google Gemini AI for intelligent code analysis
+- **� Multi-Criteria Analysis**: Security, Performance, Best Practices, Documentation
+- **🎯 Inline Comments**: Posts specific feedback on exact lines of code  
+- **📊 Detailed Summaries**: File-by-file breakdown with line numbers
+- **🔄 Retry Logic**: Robust error handling with exponential backoff
+- **📂 Multi-Language Support**: JavaScript, Python, Java, C++, and more
+- **⚡ Real-time Processing**: Instant PR review on GitHub events
 
-### 1. Clone the Repository
+## � Quick Start
+
+### 1. Clone & Install
 ```bash
-git clone <your-repo-url>
-cd code-review-agent
-```
-
-### 2. Install Dependencies
-```bash
+git clone https://github.com/Bhanuteja005/github-pr-code-review-agent.git
+cd github-pr-code-review-agent
 npm install
 ```
 
-### 3. Configure Environment
+### 2. Configure Environment
 ```bash
-# Copy the example environment file
-copy .env.example .env
-
-# Edit .env with your configuration
-notepad .env
+cp .env.example .env
+# Edit .env with your API keys and credentials
 ```
 
-### 4. Required Environment Variables
-```env
-# GitHub Configuration
-GITHUB_TOKEN=your_github_personal_access_token
-GITHUB_WEBHOOK_SECRET=your_webhook_secret
-
-# Gemini AI Configuration  
-GEMINI_API_KEY=your_gemini_api_key
-
-# Database
-MONGODB_URI=mongodb://localhost:27017/code-review-agent
-```
-
-### 5. Start MongoDB
+### 3. Start Server
 ```bash
-# Windows (if MongoDB is installed locally)
-net start MongoDB
-
-# Or use Docker
-docker run -d -p 27017:27017 --name mongodb mongo:latest
-```
-
-### 6. Run the Application
-```bash
-# Development mode with auto-reload
-npm run dev
-
-# Production mode
 npm start
 ```
 
-## 🔧 Configuration
-
-### GitHub Setup
-
-1. **Create a Personal Access Token**:
-   - Go to GitHub Settings → Developer settings → Personal access tokens
-   - Generate a token with `repo` permissions
-   - Add token to `.env` as `GITHUB_TOKEN`
-
-2. **Set up Webhook**:
-   - In your repository, go to Settings → Webhooks
-   - Add webhook URL: `https://your-domain.com/webhook/github`
-   - Content type: `application/json`
-   - Events: `Pull requests` and `Pull request reviews`
-   - Add secret and update `.env` as `GITHUB_WEBHOOK_SECRET`
-
-### Gemini AI Setup
-
-1. **Get API Key**:
-   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - Create a new API key
-   - Add to `.env` as `GEMINI_API_KEY`
-
-## 🚀 Usage
-
-### Basic Workflow
-
-1. **Open a Pull Request** in your configured repository
-2. **Agent Automatically Detects** the PR via webhook
-3. **AI Analysis** runs using Gemini 2.5 Pro
-4. **Comments Posted** directly on the PR with feedback
-5. **Review State Tracked** in MongoDB
-
-### API Endpoints
-
+### 4. Expose Publicly  
 ```bash
-# Health check
-GET /health
-
-# GitHub webhook endpoint
-POST /webhook/github
-
-# Get review status
-GET /api/reviews/:prId?owner=:owner&repo=:repo
-
-# Retry failed review
-POST /api/reviews/:prId/retry?owner=:owner&repo=:repo
+npx localtunnel --port 3000
+# Copy the URL (e.g., https://random-words-123.loca.lt)
 ```
 
-### Example Review Output
+### 5. Setup GitHub Webhook
+1. Go to Repository Settings → Webhooks → Add webhook
+2. **Payload URL**: `https://your-tunnel-url.loca.lt/webhook/github`
+3. **Content type**: `application/json`
+4. **Events**: Pull requests + Pull request reviews
+5. Save webhook
 
-The agent posts intelligent comments like:
+### 6. Test with PR
+```bash
+git checkout -b test-review
+echo "console.log('Hello AI!');" > test.js
+git add test.js && git commit -m "Add test file"
+git push origin test-review
+# Create PR via GitHub UI
+```
 
+## 📚 Documentation
+
+- **📖 [Complete Setup Guide](./SETUP_GUIDE.md)** - Detailed walkthrough with screenshots
+- **🔧 [Configuration Options](#configuration)** - Customize review behavior
+- **🛠️ [API Reference](#api-reference)** - REST endpoints and webhooks
+- **🔍 [Troubleshooting](#troubleshooting)** - Common issues and solutions
+
+## 🎯 AI Review Categories
+
+The AI analyzes code for:
+
+- **🔒 Security**: Vulnerabilities, injection risks, auth issues
+- **⚡ Performance**: Optimization opportunities, bottlenecks  
+- **📖 Readability**: Code clarity, naming, structure
+- **✨ Best Practices**: Language/framework conventions
+- **🧪 Testing**: Test coverage, quality, edge cases
+- **📝 Documentation**: Comments, README, API docs
+- **🐛 Bugs**: Logic errors, potential failures
+- **🔧 Maintainability**: Code organization, complexity
+
+## 🤖 Sample AI Review
+
+When you create a PR, the AI posts intelligent comments:
+
+**Summary Comment:**
 ```markdown
-🔴 **SECURITY**: Avoid using `eval()` as it can execute arbitrary code and poses security risks.
+🤖 **Automated Code Review Summary**
 
-**Suggestion:**
+Found 4 item(s) to review:
+
+🔴 **1 Error(s)**
+🟡 **2 Warning(s)**  
+💡 **1 Suggestion(s)**
+
+**Categories:**
+🔒 security: 1
+⚡ performance: 1
+✨ best-practices: 2
+
+**Files Reviewed:**
+📄 **src/utils/helper.js** (4 issues)
+   Lines: 12, 25-27, 35
+   🔴 1 error(s)   🟡 2 warning(s)   💡 1 suggestion(s)
+
+Please review the inline comments for detailed feedback.
+```
+
+**Inline Comments:**
+```markdown
+🔴 **SECURITY**: Using `eval()` can execute arbitrary code and poses security risks.
+
+💡 **Suggestion:**
+Use JSON.parse() for parsing data or a proper expression parser instead.
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+```env
+# Server
+PORT=3000
+NODE_ENV=development
+
+# GitHub Integration
+GITHUB_TOKEN=ghp_your_token_here
+
+# AI Service  
+GEMINI_API_KEY=your_gemini_key_here
+
+# Database
+MONGO_URL=mongodb+srv://user:pass@cluster.mongodb.net/db
+```
+
+### Review Criteria (src/config/config.js)
 ```javascript
-// Instead of: eval(userInput)
-// Use: JSON.parse(userInput) or a proper expression parser
-```
-```
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   GitHub PR     │───▶│  Webhook Handler │───▶│  Review Queue   │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                                │                        │
-                                ▼                        ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│  GitHub API     │◀───│   PR Analyzer    │◀───│ Gemini 2.5 Pro  │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                                │                        │
-                                ▼                        ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Comments      │◀───│  Comment Poster  │    │    MongoDB      │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+module.exports = {
+  REVIEW_CRITERIA: {
+    checkSecurity: true,
+    checkPerformance: true, 
+    checkReadability: true,
+    checkBestPractices: true,
+    checkTesting: true,
+    checkDocumentation: true
+  },
+  MAX_FILES_PER_PR: 20,
+  GEMINI_MODEL: 'gemini-1.5-flash'
+};
 ```
 
-## 🧪 Testing
+## 📚 API Reference
 
+### Webhook Endpoints
+- `POST /webhook/github` - Receives GitHub webhook events
+
+### REST API  
+- `GET /health` - Health check
+- `GET /api/reviews/:prId` - Get review status
+- `POST /api/reviews/:prId/retry` - Retry failed review
+
+### Health Check Response
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-12T14:18:13.163Z", 
+  "database": { "status": "connected" }
+}
+```
+
+## � Troubleshooting
+
+### Common Issues
+
+**No AI comments appearing:**
 ```bash
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run linting
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code
-npm run format
-```
-
-## 📦 Deployment
-
-### Docker Deployment
-
-```dockerfile
-# Dockerfile included in project
-docker build -t code-review-agent .
-docker run -p 3000:3000 --env-file .env code-review-agent
-```
-
-### Cloud Platforms
-
-- **Vercel**: Zero-config deployment
-- **AWS Lambda**: Serverless deployment
-- **Google Cloud Run**: Container deployment
-- **Heroku**: Simple PaaS deployment
-
-## 🔍 Monitoring
-
-### Health Checks
-```bash
+# Check server health
 curl http://localhost:3000/health
+
+# Test webhook
+curl -X POST http://localhost:3000/webhook/github \
+  -H "Content-Type: application/json" \
+  -H "X-GitHub-Event: ping" \
+  -d '{"zen":"test"}'
 ```
 
-### Logs
-- Application logs: `logs/combined.log`
-- Error logs: `logs/error.log`
-- Console logs in development mode
+**Gemini API errors:** System has automatic retry logic with exponential backoff
 
-### Database Monitoring
+**Tunnel unavailable:** Restart localtunnel and update webhook URL
+
+See [SETUP_GUIDE.md](./SETUP_GUIDE.md) for detailed troubleshooting.
+
+## � Deployment
+
+### Local Development
 ```bash
-# Review statistics
-GET /api/stats
-
-# Active reviews
-GET /api/reviews/active
+npm start
+npx localtunnel --port 3000
 ```
+
+### Production
+- Use proper domain (not localtunnel)
+- Enable HTTPS and webhook signature validation
+- Set up monitoring and logging
+- Use environment variables for secrets
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
+2. Create feature branch: `git checkout -b feature/amazing-feature`  
 3. Commit changes: `git commit -m 'Add amazing feature'`
 4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+5. Open Pull Request
 
-## 📝 License
+## � License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 🙋‍♂️ Support
 
-- **Documentation**: Check the `/docs` folder for detailed guides
-- **Issues**: Report bugs via GitHub Issues
-- **Discussions**: Use GitHub Discussions for questions
-
-## 🔮 Roadmap
-
-- [ ] **Custom Rules Engine**: Team-specific coding guidelines
-- [ ] **Dashboard UI**: Web interface for review management  
-- [ ] **Multi-Repository Support**: Manage multiple repositories
-- [ ] **Learning Mode**: Improve review quality over time
-- [ ] **Slack/Teams Integration**: Notifications and summaries
-- [ ] **Code Quality Metrics**: Track improvement over time
+- **📖 Documentation**: [Complete Setup Guide](./SETUP_GUIDE.md)
+- **🐛 Issues**: [GitHub Issues](https://github.com/Bhanuteja005/github-pr-code-review-agent/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/Bhanuteja005/github-pr-code-review-agent/discussions)
 
 ---
 
-**Built with ❤️ using Gemini 2.5 Pro and Node.js**
